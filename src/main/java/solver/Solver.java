@@ -1,7 +1,8 @@
 package solver;
 
+import org.mariuszgromada.math.mxparser.Expression;
+
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -19,51 +20,52 @@ class IntegrationResult {
     }
 }
 
-public class Main {
+public class Solver {
 
     private static DecimalFormat df = new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
 
-    private static IntegrationResult getIntegralByRungeRule(Function<Double, Double> function, double leftLimit, double rightLimit, double epsilon) {
-        double integral = 0;
-        double previousIntegral;
-        int direction = 1;
-
-        if (leftLimit == rightLimit) {
-            return new IntegrationResult(integral, 1, 0);
-        } else if (leftLimit > rightLimit) {
-            double temp = leftLimit;
-            leftLimit = rightLimit;
-            rightLimit = temp;
-            direction = -1;
+    public static double getRootByBisectionMethod(Expression f, double a, double b, double epsilon) {
+        double x = (a + b) / 2;
+        String arg = f.getArgument(0).getArgumentName();
+        f.setArgumentValue(arg, x);
+        double fx = f.calculate();
+        double fa;
+        while (Math.abs(fx) >= epsilon && Math.abs(a - b) > epsilon) {
+            f.setArgumentValue(arg, a);
+            fa = f.calculate();
+            if (fa * fx > 0) a = x;
+            else b = x;
+            x = (a + b) / 2;
+            f.setArgumentValue(arg, x);
+            fx = f.calculate();
         }
-
-        int steps = 10;
-        integral = direction * getSimpsonsIntegral(function, leftLimit, rightLimit, steps);
-
-        double theta = 1.0 / 15.0;
-        do {
-            steps *= 2;
-            previousIntegral = integral;
-            integral = direction * getSimpsonsIntegral(function, leftLimit, rightLimit, steps);
-        } while (theta * Math.abs(integral - previousIntegral) > epsilon);
-
-        return new IntegrationResult(integral, steps, theta * Math.abs(integral - previousIntegral));
+        return x;
     }
 
-    private static double getSimpsonsIntegral(Function<Double, Double> function, double leftLimit, double rightLimit, int steps) {
-        double h = (rightLimit - leftLimit) / steps;
-        double integral = 0;
-        for (int i = 1; i < steps; i += 2) {
-            integral += function.apply(leftLimit + h * (i - 1));
-            integral += 4 * function.apply(leftLimit + h * i);
-            integral += function.apply(leftLimit + h * (i + 1));
+    public static double getRootBySecantMethod(Expression f, double a, double b, double epsilon) throws Exception {
+        String arg = f.getArgument(0).getArgumentName();
+        f.setArgumentValue(arg, a);
+        double fa = f.calculate();
+        f.setArgumentValue(arg, b);
+        double fb = f.calculate();
+        if (fa * fb > 0) throw new Exception("Method is incorrect for this interval");
+
+        double x = b;
+        f.setArgumentValue(arg, x);
+        double fx = f.calculate();
+        double xn = x + 10;
+        while (Math.abs(fx) > epsilon && Math.abs(x - xn) > epsilon) {
+            xn = x;
+            x = x - ((a - x) / (fa - fx)) * fx;
+            f.setArgumentValue(arg, x);
+            fx = f.calculate();
         }
-        return integral * h / 3;
+        return x;
     }
 
     private static double getRootByBisectionMethod(Function<Double, Double> f, double a, double b, double epsilon) {
         double x = (a + b) / 2;
-        while (Math.abs(f.apply(x)) >= epsilon) {
+        while (Math.abs(f.apply(x)) >= epsilon && (a - b) >= epsilon) {
             if (f.apply(a) * f.apply(x) > 0) a = x;
             else b = x;
             x = (a + b) / 2;
@@ -71,10 +73,12 @@ public class Main {
         return x;
     }
 
-    private static double getRootBySecantMethod(Function<Double, Double> f, double a, double b, double epsilon) throws Exception{
-        if (f.apply(a)*f.apply(b)>0) throw new Exception("Method is incorrect for this interval");
+    private static double getRootBySecantMethod(Function<Double, Double> f, double a, double b, double epsilon) throws Exception {
+        if (f.apply(a) * f.apply(b) > 0) throw new Exception("Method is incorrect for this interval");
         double x = b;
-        while (Math.abs(f.apply(x)) >= epsilon) {
+        double xn = x + 10;
+        while (Math.abs(f.apply(x)) >= epsilon && Math.abs(x - xn) > epsilon) {
+            xn = x;
             x = x - ((a - x) / (f.apply(a) - f.apply(x))) * f.apply(x);
         }
         return x;
@@ -94,7 +98,7 @@ public class Main {
         return input;
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         df.setMaximumFractionDigits(10);
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -132,5 +136,5 @@ public class Main {
             System.out.println(ex.getMessage());
         }
 
-    }
+    }*/
 }

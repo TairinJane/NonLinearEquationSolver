@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<VBox prefHeight="509.0" prefWidth="687.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="solver.Main">
+    <TabPane prefHeight="511.0" prefWidth="687.0" tabClosingPolicy="UNAVAILABLE">
+        <Tab text="Single">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="458.0" prefWidth="687.0">
+                <Label fx:id="error" layoutX="23.0" layoutY="282.0" prefHeight="18.0" prefWidth="20.0" textFill="RED">
+                    <font>
+                        <Font name="System Bold" size="12.0"/>
+                    </font>
+                </Label>
+                <VBox layoutX="7.0" layoutY="10.0" prefHeight="380.0" prefWidth="186.0" spacing="7.0">
+                    <Label text="Function"/>
+                    <TextField fx:id="func" prefHeight="26.0" prefWidth="180.0"/>
+                    <Label text="Left limit (a)"/>
+                    <TextField fx:id="a" prefHeight="26.0" prefWidth="180.0"/>
+                    <Label text="Right limit (b)"/>
+                    <TextField fx:id="b" prefHeight="26.0" prefWidth="180.0"/>
+                    <Label text="Epsilon"/>
+                    <TextField fx:id="epsilon" prefHeight="26.0" prefWidth="180.0"/>
+                    <Button mnemonicParsing="false" onAction="#onSingleButtonClick" prefHeight="26.0" prefWidth="193.0"
+                            text="Calculate"/>
+                    <Button mnemonicParsing="false" onAction="#test1" prefHeight="26.0" prefWidth="198.0"
+                            text="Test 1"/>
+                    <Button mnemonicParsing="false" onAction="#test2" prefHeight="26.0" prefWidth="207.0"
+                            text="Test 2"/>
+                    <Button mnemonicParsing="false" onAction="#test3" prefHeight="26.0" prefWidth="219.0"
+                            text="Test 3"/>
+                </VBox>
+                <HBox fx:id="chartBox" layoutX="214.0" layoutY="16.0" prefHeight="345.0" prefWidth="458.0"/>
+                <GridPane layoutX="214.0" layoutY="390.0" prefHeight="72.0" prefWidth="467.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="171.2" minWidth="10.0"
+                                           prefWidth="75.19999999999999"/>
+                        <ColumnConstraints hgrow="ALWAYS" maxWidth="296.0" minWidth="50.0" prefWidth="296.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <Label prefHeight="18.0" prefWidth="154.0" text="Bisection method:"/>
+                    <Label prefHeight="18.0" prefWidth="165.0" text="Secant method:" GridPane.rowIndex="1"/>
+                    <Label fx:id="bisectionResult" prefHeight="18.0" prefWidth="250.0" text="x =" textOverrun="CLIP"
+                           GridPane.columnIndex="1"/>
+                    <Label fx:id="secantResult" prefHeight="18.0" prefWidth="244.0" text="x =" textOverrun="CLIP"
+                           GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                </GridPane>
+            </AnchorPane>
+        </Tab>
+        <Tab text="System">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+        </Tab>
+    </TabPane>
+</VBox>

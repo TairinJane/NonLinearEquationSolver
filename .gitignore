@@ -2,3 +2,5 @@
 /.idea
 /out
 *.iml
+target
+src/test
