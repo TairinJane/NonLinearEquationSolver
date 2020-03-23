@@ -8,21 +8,14 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import java.util.function.Function;
 
-class IntegrationResult {
-    double integral;
-    int steps;
-    double calculationError;
-
-    public IntegrationResult(double integral, int steps, double calculationError) {
-        this.integral = integral;
-        this.steps = steps;
-        this.calculationError = calculationError;
-    }
-}
-
 public class Solver {
 
     private static DecimalFormat df = new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+
+    public static String formatToPrecision(double x, int precision) {
+        df.setMaximumFractionDigits(precision);
+        return df.format(x);
+    }
 
     public static double getRootByBisectionMethod(Expression f, double a, double b, double epsilon) {
         double x = (a + b) / 2;

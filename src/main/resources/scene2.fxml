@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
@@ -8,12 +11,7 @@
     <TabPane prefHeight="511.0" prefWidth="687.0" tabClosingPolicy="UNAVAILABLE">
         <Tab text="Single">
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="458.0" prefWidth="687.0">
-                <Label fx:id="error" layoutX="23.0" layoutY="282.0" prefHeight="18.0" prefWidth="20.0" textFill="RED">
-                    <font>
-                        <Font name="System Bold" size="12.0"/>
-                    </font>
-                </Label>
-                <VBox layoutX="7.0" layoutY="10.0" prefHeight="380.0" prefWidth="186.0" spacing="7.0">
+                <VBox layoutX="7.0" layoutY="10.0" prefHeight="467.0" prefWidth="186.0" spacing="7.0">
                     <Label text="Function"/>
                     <TextField fx:id="func" prefHeight="26.0" prefWidth="180.0"/>
                     <Label text="Left limit (a)"/>
@@ -30,13 +28,17 @@
                             text="Test 2"/>
                     <Button mnemonicParsing="false" onAction="#test3" prefHeight="26.0" prefWidth="219.0"
                             text="Test 3"/>
+                    <Label fx:id="error" prefHeight="30.0" prefWidth="186.0" textFill="RED">
+                        <font>
+                            <Font name="System Bold" size="12.0"/>
+                        </font>
+                    </Label>
                 </VBox>
                 <HBox fx:id="chartBox" layoutX="214.0" layoutY="16.0" prefHeight="345.0" prefWidth="458.0"/>
                 <GridPane layoutX="214.0" layoutY="390.0" prefHeight="72.0" prefWidth="467.0">
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="171.2" minWidth="10.0"
-                                           prefWidth="75.19999999999999"/>
-                        <ColumnConstraints hgrow="ALWAYS" maxWidth="296.0" minWidth="50.0" prefWidth="296.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="171.2" minWidth="10.0" prefWidth="120.2"/>
+                        <ColumnConstraints hgrow="ALWAYS" maxWidth="360.0" minWidth="50.0" prefWidth="347.0"/>
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
@@ -44,15 +46,36 @@
                     </rowConstraints>
                     <Label prefHeight="18.0" prefWidth="154.0" text="Bisection method:"/>
                     <Label prefHeight="18.0" prefWidth="165.0" text="Secant method:" GridPane.rowIndex="1"/>
-                    <Label fx:id="bisectionResult" prefHeight="18.0" prefWidth="250.0" text="x =" textOverrun="CLIP"
+                    <Label fx:id="bisectionResult" prefHeight="31.0" prefWidth="358.0" text="x ="
                            GridPane.columnIndex="1"/>
-                    <Label fx:id="secantResult" prefHeight="18.0" prefWidth="244.0" text="x =" textOverrun="CLIP"
+                    <Label fx:id="secantResult" prefHeight="30.0" prefWidth="360.0" text="x =" wrapText="true"
                            GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                 </GridPane>
             </AnchorPane>
         </Tab>
         <Tab text="System">
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="516.0" prefWidth="738.0">
+                <HBox layoutX="14.0" layoutY="14.0" prefHeight="456.0" prefWidth="662.0" spacing="10.0">
+                    <VBox fx:id="functions" prefHeight="456.0" prefWidth="208.0" spacing="5.0">
+                        <TextField/>
+                        <TextField/>
+                    </VBox>
+                    <VBox prefHeight="456.0" prefWidth="218.0" spacing="5.0">
+                        <HBox prefHeight="32.0" prefWidth="172.0" spacing="5.0">
+                            <Label text="x1"/>
+                            <TextField/>
+                        </HBox>
+                    </VBox>
+                    <LineChart prefHeight="343.0" prefWidth="312.0">
+                        <xAxis>
+                            <CategoryAxis side="BOTTOM"/>
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis side="LEFT"/>
+                        </yAxis>
+                    </LineChart>
+                </HBox>
+            </AnchorPane>
         </Tab>
     </TabPane>
 </VBox>

@@ -44,6 +44,7 @@ public class Main extends Application {
             aVal = Double.parseDouble(a.getText().trim().replaceAll("[,]+", "."));
             bVal = Double.parseDouble(b.getText().trim().replaceAll("[,]+", "."));
             epsVal = Double.parseDouble(epsilon.getText().trim().replaceAll("[,]+", "."));
+            if (epsVal >= 1) throw new NumberFormatException();
         } catch (NumberFormatException e) {
             error.setText("Incorrect values");
             return;
@@ -70,21 +71,23 @@ public class Main extends Application {
             aVal = bVal;
             bVal = t;
         }
+        int precision = epsilon.getText().trim().replaceAll("[,]+", ".").length() - 2;
         double bisectionRoot = Solver.getRootByBisectionMethod(expression, aVal, bVal, epsVal);
         System.out.println("bx = " + bisectionRoot);
-        bisectionResult.setText(String.format("%s = %f", arg, bisectionRoot));
+        bisectionResult.setText(String.format("%s = %s", arg, Solver.formatToPrecision(bisectionRoot, precision)));
+        Double secantRoot = null;
         try {
-            double secantRoot = Solver.getRootBySecantMethod(expression, aVal, bVal, epsVal);
+            secantRoot = Solver.getRootBySecantMethod(expression, aVal, bVal, epsVal);
             System.out.println("secx = " + secantRoot);
-            secantResult.setText(String.format("%s = %f", arg, secantRoot));
+            secantResult.setText(String.format("%s = %s", arg, Solver.formatToPrecision(secantRoot, precision)));
         } catch (Exception e) {
             System.out.println(e.getMessage());
             secantResult.setText(e.getMessage());
         }
-        drawPlot(expression, aVal, bVal);
+        drawPlot(expression, aVal, bVal, bisectionRoot, secantRoot);
     }
 
-    private void drawPlot(Expression f, double a, double b) {
+    private void drawPlot(Expression f, double a, double b, Double x1, Double x2) {
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
         ObservableList<XYChart.Data<Number, Number>> data = series.getData();
 
@@ -107,11 +110,25 @@ public class Main extends Application {
         LineChart<Number, Number> chart = new LineChart<>(xAxis, yAxis);
         chart.getData().add(series);
         chart.setTitle("Function plot");
+//        chart.setCreateSymbols(false);
         chart.setLegendVisible(false);
+
+        addRootToChart(f, x1, arg, chart);
+
+        addRootToChart(f, x2, arg, chart);
 
         chartBox.getChildren().clear();
         chartBox.getChildren().add(chart);
         System.out.println("Chart!!!!");
+    }
+
+    private void addRootToChart(Expression f, Double x1, String arg, LineChart<Number, Number> chart) {
+        if (x1 != null) {
+            f.setArgumentValue(arg, x1);
+            XYChart.Series<Number, Number> s2 = new XYChart.Series<>();
+            s2.getData().add(new XYChart.Data<>(x1, f.calculate()));
+            chart.getData().add(s2);
+        }
     }
 
     @FXML
