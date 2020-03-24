@@ -3,4 +3,4 @@
 /out
 *.iml
 target
-src/test
+/src/test/

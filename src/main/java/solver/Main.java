@@ -29,6 +29,18 @@ public class Main extends Application {
     public Label bisectionResult;
     public Label secantResult;
 
+    public Label xResult;
+    public Label yResult;
+    public TextField dx1;
+    public TextField dx2;
+    public TextField dy1;
+    public TextField dy2;
+    public TextField function1;
+    public TextField function2;
+    public TextField xArg;
+    public TextField yArg;
+    public TextField epsilonSys;
+
     @FXML
     public void onSingleButtonClick() {
         error.setText("");
@@ -51,10 +63,7 @@ public class Main extends Application {
         }
         System.out.println(String.format("a = %f, b = %f, eps = %f", aVal, bVal, epsVal));
 
-        Expression expression = new Expression(func.getText().trim().replaceAll("\\*", " * ")
-                .replaceAll("\\+", " + ")
-                .replaceAll("-", " - ")
-                .replaceAll("/", " / "));
+        Expression expression = new Expression(formatToExpression(func.getText()));
         System.out.println(expression.getExpressionString());
         if (!expression.checkLexSyntax()) {
             error.setText("Invalid function");
@@ -171,5 +180,62 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         Application.launch();
+    }
+
+    private String formatToExpression(String expression) {
+        return expression.trim().replaceAll("\\*", " * ")
+                .replaceAll("\\+", " + ")
+                .replaceAll("-", " - ")
+                .replaceAll("/", " / ");
+    }
+
+    public void solveSystem() {
+        Expression[] f = {new Expression(formatToExpression(function1.getText())),
+                new Expression(formatToExpression(function2.getText()))};
+
+        Expression[][] d = {{new Expression(formatToExpression(dx1.getText())), new Expression(formatToExpression(dx2.getText()))},
+                {new Expression(formatToExpression(dy1.getText())), new Expression(formatToExpression(dy2.getText()))}};
+
+        double[] x = {Double.parseDouble(xArg.getText()), Double.parseDouble(yArg.getText())};
+        double epsilon = Double.parseDouble(epsilonSys.getText());
+
+        double[] result = NewtonSystem.solveSystem(f, d, x, epsilon);
+
+        xResult.setText("x = " + Solver.formatToPrecision(result[0], epsilonSys.getText().trim().replaceAll("[,]+", ".").length() - 2));
+        yResult.setText("y = " + Solver.formatToPrecision(result[1], epsilonSys.getText().trim().replaceAll("[,]+", ".").length() - 2));
+    }
+
+    public void testSystem1() {
+        function1.setText("0.1*x^2 + x + 0.2*y^2 - 0.3");
+        function2.setText("0.2*x^2 + y - 0.1*x*y - 0.7");
+
+        dx1.setText("0.2*x + 0*y + 1");
+        dx2.setText("0.4*x - 0.1*y");
+        dy1.setText("0*x + 0.4*y");
+        dy2.setText("1 - 0.1*x + 0*y");
+
+        xArg.setText("0.25");
+        yArg.setText("0.75");
+
+        epsilonSys.setText("0.00001");
+
+        solveSystem();
+    }
+
+    public void testSystem2() {
+        function1.setText("sin(2*x - y) - 1.2*x - 0.4");
+        function2.setText("0.8*x^2 + 1.5*y^2 - 1");
+
+        dx1.setText("2*cos(2*x - y) - 1.2");
+        dx2.setText("1.6*x + 0*y");
+        dy1.setText("- cos (2*x - y)");
+        dy2.setText("0*x + 3*y");
+
+        xArg.setText("0.4");
+        yArg.setText("-0.75");
+
+        epsilonSys.setText("0.001");
+
+        solveSystem();
     }
 }
