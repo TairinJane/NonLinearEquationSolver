@@ -195,7 +195,7 @@ public class Main extends Application {
     @FXML
     public void test1() {
         func.setText("2*x^2-20");
-        a.setText("-10");
+        a.setText("-5");
         b.setText("2");
         epsilon.setText("0.00001");
         onSingleButtonClick();
@@ -264,27 +264,37 @@ public class Main extends Application {
             for (int i = 0; i < systemSize; i++) {
                 if (functionsArray[i].getText().equals("")) throw new Exception("Enter " + (i + 1) + "th function");
                 f[i] = new Expression(formatToExpression(functionsArray[i].getText()));
+                if (f[i].getMissingUserDefinedArguments().length != systemSize)
+                    throw new Exception("Function " + (i + 1) + " should include " + systemSize + " variables");
                 if (argsArray[i].getText().equals("")) throw new Exception("Enter " + (i + 1) + "th argument");
                 x[i] = Double.parseDouble(argsArray[i].getText());
                 for (int j = 0; j < systemSize; j++) {
                     if (derivativeArray[i][j].getText().equals(""))
                         throw new Exception("Enter derivative for function " + (j + 1) + " by " + (i + 1) + "th argument");
                     d[i][j] = new Expression(formatToExpression(derivativeArray[i][j].getText()));
+                    if (d[i][j].getMissingUserDefinedArguments().length != systemSize)
+                        throw new Exception((i + 1) + "th derivative should include " + systemSize + " variables");
                 }
             }
             double epsilon = 0.00001f;
-            if (!epsilonSys.getText().equals("")) epsilon = Double.parseDouble(epsilonSys.getText());
+            if (!epsilonSys.getText().equals(""))
+                epsilon = Double.parseDouble(epsilonSys.getText().trim().replaceAll("[,]+", "."));
             else epsilonSys.setText(String.valueOf(epsilon));
             if (epsilon <= 0 || epsilon >= 1) throw new Exception("Epsilon must be between 0 and 1");
 
             int maxIterations = 50;
-            if (!iterMax.getText().equals("")) maxIterations = Integer.parseInt(iterMax.getText());
-            else iterMax.setText(String.valueOf(maxIterations));
+            if (!iterMax.getText().equals("")) {
+                try {
+                    maxIterations = Integer.parseInt(iterMax.getText());
+                } catch (NumberFormatException e) {
+                    throw new Exception("Number of iterations must be integer");
+                }
+            } else iterMax.setText(String.valueOf(maxIterations));
             if (maxIterations <= 0 || maxIterations > 50) throw new Exception("Iterations must be between 1 and 50");
             errorSysLabel.setText("");
 
             double[] result = NewtonSystem.solveSystem(f, d, x, epsilon, maxIterations);
-            int precision = epsilonSys.getText().trim().replaceAll("[,]+", ".").length() - 2;
+            int precision = String.valueOf(epsilon).length() - 2;
             for (double r : result) {
                 if (Double.isNaN(r)) throw new Exception("System doesn't converge");
             }

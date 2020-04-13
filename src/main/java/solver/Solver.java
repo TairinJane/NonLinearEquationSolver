@@ -47,22 +47,22 @@ public class Solver {
         if (fa * fb > 0 || Double.isNaN(fa) || Double.isNaN(fb))
             throw new Exception("Method is incorrect for this interval");
 
-        double x = b;
-//        double x = a - (fa * (b - a) / (fb - fa));
-        f.setArgumentValue(arg, x);
-        double fx = f.calculate();
-        double xn = x + 10;
-        while (Math.abs(fx) > epsilon && Math.abs(x - xn) > epsilon) {
+        double x = a;
+        double xn = a - (b - a) / (fb - fa) * fa;
+        System.out.println("sc xn = " + xn);
+        f.setArgumentValue(arg, xn);
+        double fxn = f.calculate();
+
+        while (Math.abs(xn - x) > epsilon && Math.abs(fxn) > epsilon) {
+            x = xn;
+            xn = xn - (a - xn) / (fa - fxn) * fxn;
+            f.setArgumentValue(arg, xn);
+            fxn = f.calculate();
             n++;
-            xn = x;
-            x = x - ((a - x) / (fa - fx)) * fx;
-//            x = a - ((fa / (fx - fa)) * (x - a));
-            f.setArgumentValue(arg, x);
-            fx = f.calculate();
-            if (Double.isNaN(fx) || Double.isNaN(x)) throw new Exception("Method is incorrect for this interval");
-            if (n > maxn) throw new Exception("Precision is unreachable");
+            if (n > maxn) throw new Exception("Method doesn't converge on this interval");
         }
-        return x;
+
+        return xn;
     }
 
     private static double getRootByBisectionMethod(Function<Double, Double> f, double a, double b, double epsilon) {
