@@ -17,7 +17,7 @@ public class Solver {
         return df.format(x);
     }
 
-    public static double getRootByBisectionMethod(Expression f, double a, double b, double epsilon) {
+    public static double getRootByBisectionMethod(Expression f, double a, double b, double epsilon) throws Exception {
         double x = (a + b) / 2;
         String arg = f.getArgument(0).getArgumentName();
         f.setArgumentValue(arg, x);
@@ -31,27 +31,36 @@ public class Solver {
             x = (a + b) / 2;
             f.setArgumentValue(arg, x);
             fx = f.calculate();
+            if (Double.isNaN(fa) || Double.isNaN(fx)) throw new Exception("Method is incorrect for this interval");
         }
         return x;
     }
 
     public static double getRootBySecantMethod(Expression f, double a, double b, double epsilon) throws Exception {
+        int maxn = 1000;
+        int n = 0;
         String arg = f.getArgument(0).getArgumentName();
         f.setArgumentValue(arg, a);
         double fa = f.calculate();
         f.setArgumentValue(arg, b);
         double fb = f.calculate();
-        if (fa * fb > 0) throw new Exception("Method is incorrect for this interval");
+        if (fa * fb > 0 || Double.isNaN(fa) || Double.isNaN(fb))
+            throw new Exception("Method is incorrect for this interval");
 
         double x = b;
+//        double x = a - (fa * (b - a) / (fb - fa));
         f.setArgumentValue(arg, x);
         double fx = f.calculate();
         double xn = x + 10;
         while (Math.abs(fx) > epsilon && Math.abs(x - xn) > epsilon) {
+            n++;
             xn = x;
             x = x - ((a - x) / (fa - fx)) * fx;
+//            x = a - ((fa / (fx - fa)) * (x - a));
             f.setArgumentValue(arg, x);
             fx = f.calculate();
+            if (Double.isNaN(fx) || Double.isNaN(x)) throw new Exception("Method is incorrect for this interval");
+            if (n > maxn) throw new Exception("Precision is unreachable");
         }
         return x;
     }

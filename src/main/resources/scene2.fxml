@@ -1,96 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<VBox prefHeight="509.0" prefWidth="687.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+<VBox prefHeight="749.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="solver.Main">
-    <TabPane prefHeight="511.0" prefWidth="687.0" tabClosingPolicy="UNAVAILABLE">
+    <TabPane prefHeight="754.0" prefWidth="760.0" tabClosingPolicy="UNAVAILABLE">
         <Tab text="Single">
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="458.0" prefWidth="687.0">
-                <VBox layoutX="7.0" layoutY="10.0" prefHeight="467.0" prefWidth="186.0" spacing="7.0">
-                    <Label text="Function"/>
-                    <TextField fx:id="func" prefHeight="26.0" prefWidth="180.0"/>
-                    <Label text="Left limit (a)"/>
-                    <TextField fx:id="a" prefHeight="26.0" prefWidth="180.0"/>
-                    <Label text="Right limit (b)"/>
-                    <TextField fx:id="b" prefHeight="26.0" prefWidth="180.0"/>
-                    <Label text="Epsilon"/>
-                    <TextField fx:id="epsilon" prefHeight="26.0" prefWidth="180.0"/>
-                    <Button mnemonicParsing="false" onAction="#onSingleButtonClick" prefHeight="26.0" prefWidth="193.0"
-                            text="Calculate"/>
-                    <Button mnemonicParsing="false" onAction="#test1" prefHeight="26.0" prefWidth="198.0"
-                            text="Test 1"/>
-                    <Button mnemonicParsing="false" onAction="#test2" prefHeight="26.0" prefWidth="207.0"
-                            text="Test 2"/>
-                    <Button mnemonicParsing="false" onAction="#test3" prefHeight="26.0" prefWidth="219.0"
-                            text="Test 3"/>
-                    <Label fx:id="error" prefHeight="30.0" prefWidth="186.0" textFill="RED">
-                        <font>
-                            <Font name="System Bold" size="12.0"/>
-                        </font>
-                    </Label>
-                </VBox>
-                <HBox fx:id="chartBox" layoutX="214.0" layoutY="16.0" prefHeight="345.0" prefWidth="458.0"/>
-                <GridPane layoutX="214.0" layoutY="390.0" prefHeight="72.0" prefWidth="467.0">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="171.2" minWidth="10.0" prefWidth="120.2"/>
-                        <ColumnConstraints hgrow="ALWAYS" maxWidth="360.0" minWidth="50.0" prefWidth="347.0"/>
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                    </rowConstraints>
-                    <Label prefHeight="18.0" prefWidth="154.0" text="Bisection method:"/>
-                    <Label prefHeight="18.0" prefWidth="165.0" text="Secant method:" GridPane.rowIndex="1"/>
-                    <Label fx:id="bisectionResult" prefHeight="31.0" prefWidth="358.0" text="x ="
-                           GridPane.columnIndex="1"/>
-                    <Label fx:id="secantResult" prefHeight="30.0" prefWidth="360.0" text="x =" wrapText="true"
-                           GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                </GridPane>
+                <HBox prefHeight="652.0" prefWidth="760.0" spacing="5.0">
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </padding>
+                    <VBox prefHeight="652.0" prefWidth="194.0" spacing="7.0">
+                        <Label text="Function"/>
+                        <TextField fx:id="func" prefHeight="26.0" prefWidth="180.0"/>
+                        <Label text="Left limit (a)"/>
+                        <TextField fx:id="a" prefHeight="26.0" prefWidth="180.0"/>
+                        <Label text="Right limit (b)"/>
+                        <TextField fx:id="b" prefHeight="26.0" prefWidth="180.0"/>
+                        <Label text="Epsilon"/>
+                        <TextField fx:id="epsilon" prefHeight="26.0" prefWidth="180.0"/>
+                        <Button mnemonicParsing="false" onAction="#onSingleButtonClick" prefHeight="26.0"
+                                prefWidth="193.0" text="Calculate"/>
+                        <Button mnemonicParsing="false" onAction="#test1" prefHeight="26.0" prefWidth="198.0"
+                                text="Test 1"/>
+                        <Button mnemonicParsing="false" onAction="#test2" prefHeight="26.0" prefWidth="207.0"
+                                text="Test 2"/>
+                        <Button mnemonicParsing="false" onAction="#test3" prefHeight="26.0" prefWidth="219.0"
+                                text="Test 3"/>
+                        <Label fx:id="error" prefHeight="30.0" prefWidth="186.0" textFill="RED">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                    </VBox>
+                    <VBox prefHeight="652.0" prefWidth="568.0">
+                        <HBox fx:id="chartBox" prefHeight="475.0" prefWidth="567.0"/>
+                        <GridPane prefHeight="72.0" prefWidth="493.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="230.2" minWidth="10.0"
+                                                   prefWidth="122.20000762939452"/>
+                                <ColumnConstraints hgrow="ALWAYS" maxWidth="408.9999923706055" minWidth="50.0"
+                                                   prefWidth="408.9999923706055"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                            </rowConstraints>
+                            <Label prefHeight="18.0" prefWidth="154.0" text="Bisection method:"/>
+                            <Label prefHeight="18.0" prefWidth="165.0" text="Secant method:" GridPane.rowIndex="1"/>
+                            <Label fx:id="bisectionResult" prefHeight="31.0" prefWidth="358.0" text="x ="
+                                   GridPane.columnIndex="1"/>
+                            <Label fx:id="secantResult" prefHeight="30.0" prefWidth="360.0" text="x ="
+                                   wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        </GridPane>
+                    </VBox>
+                </HBox>
             </AnchorPane>
         </Tab>
-        <Tab text="System">
+        <Tab onSelectionChanged="#systemTabSelected" text="System">
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="516.0" prefWidth="738.0">
-                <VBox fillWidth="false" prefHeight="478.0" prefWidth="687.0" spacing="10.0">
+                <VBox fillWidth="false" prefHeight="718.0" prefWidth="760.0" spacing="10.0">
                     <padding>
                         <Insets left="10.0" top="5.0"/>
                     </padding>
-                    <HBox prefHeight="114.0" prefWidth="695.0" spacing="15.0">
-                        <VBox fx:id="functions" prefHeight="104.0" prefWidth="299.0" spacing="5.0">
+                    <Label text="System size">
+                        <font>
+                            <Font name="System Bold" size="14.0"/>
+                        </font>
+                    </Label>
+                    <HBox prefHeight="28.0" prefWidth="367.0" spacing="10.0">
+                        <RadioButton fx:id="toggle2" mnemonicParsing="false" selected="true" text="2">
+                            <toggleGroup>
+                                <ToggleGroup fx:id="functionsToggleGroup"/>
+                            </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="toggle3" mnemonicParsing="false" text="3"
+                                     toggleGroup="$functionsToggleGroup"/>
+                    </HBox>
+                    <HBox prefHeight="122.0" prefWidth="749.0" spacing="15.0">
+                        <VBox fx:id="functionsBox" prefHeight="112.0" prefWidth="323.0" spacing="5.0">
                             <Label prefHeight="18.0" prefWidth="208.0" text="Functions">
                                 <font>
-                                    <Font name="System Bold" size="12.0"/>
+                                    <Font name="System Bold" size="14.0"/>
                                 </font>
                             </Label>
                             <TextField fx:id="function1"/>
                             <TextField fx:id="function2"/>
+                            <TextField fx:id="function3"/>
                         </VBox>
-                        <VBox prefHeight="104.0" prefWidth="185.0" spacing="5.0">
+                        <VBox prefHeight="112.0" prefWidth="216.0" spacing="5.0">
                             <Label text="Arguments">
                                 <font>
-                                    <Font name="System Bold" size="12.0"/>
+                                    <Font name="System Bold" size="14.0"/>
                                 </font>
                             </Label>
                             <HBox prefHeight="32.0" prefWidth="172.0" spacing="5.0">
-                                <Label text="x"/>
+                                <Label prefHeight="18.0" prefWidth="40.0" text="x0 ="/>
                                 <TextField fx:id="xArg"/>
                             </HBox>
                             <HBox prefHeight="36.0" prefWidth="218.0" spacing="5.0">
-                                <Label text="y"/>
+                                <Label prefHeight="18.0" prefWidth="40.0" text="y0 ="/>
                                 <TextField fx:id="yArg"/>
                             </HBox>
+                            <HBox fx:id="argZBox" prefHeight="100.0" prefWidth="200.0">
+                                <Label prefHeight="18.0" prefWidth="44.0" text="z0 =">
+                                    <padding>
+                                        <Insets right="5.0"/>
+                                    </padding>
+                                </Label>
+                                <TextField fx:id="zArg"/>
+                            </HBox>
                         </VBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                        <VBox prefHeight="112.0" prefWidth="169.0" spacing="10.0">
                             <Label prefHeight="18.0" prefWidth="101.0" text="Result">
                                 <font>
-                                    <Font name="System Bold" size="12.0"/>
+                                    <Font name="System Bold" size="14.0"/>
                                 </font>
                             </Label>
                             <Label text="x =" fx:id="xResult"/>
                             <Label fx:id="yResult" text="y ="/>
+                            <Label fx:id="zResult" text="z ="/>
                         </VBox>
                         <padding>
                             <Insets top="10.0"/>
@@ -98,50 +130,76 @@
                     </HBox>
                     <Label text="Derivatives">
                         <font>
-                            <Font name="System Bold" size="12.0"/>
+                            <Font name="System Bold" size="14.0"/>
                         </font>
                     </Label>
-                    <GridPane hgap="10.0" prefHeight="94.0" prefWidth="651.0" vgap="5.0">
-                        <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="224.0" minWidth="10.0" prefWidth="104.6"/>
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="405.00000381469727" minWidth="10.0"
-                                               prefWidth="259.8"/>
-                            <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="346.0" minWidth="10.0"
-                                               prefWidth="315.80000000000007"/>
-                        </columnConstraints>
-                        <rowConstraints>
-                            <RowConstraints maxHeight="23.4" minHeight="10.0" prefHeight="16.4" vgrow="SOMETIMES"/>
-                            <RowConstraints maxHeight="40.4" minHeight="10.0" prefHeight="34.8" vgrow="SOMETIMES"/>
-                            <RowConstraints maxHeight="35.400000000000006" minHeight="10.0"
-                                            prefHeight="34.400000000000006" vgrow="SOMETIMES"/>
-                        </rowConstraints>
-                        <Label text="Function 1" GridPane.rowIndex="1"/>
-                        <Label text="Function 2" GridPane.rowIndex="2"/>
-                        <Label alignment="CENTER" prefHeight="18.0" prefWidth="260.0" text="x" textAlignment="CENTER"
-                               GridPane.columnIndex="1"/>
-                        <Label alignment="CENTER" prefHeight="18.0" prefWidth="269.0" text="y"
-                               GridPane.columnIndex="2"/>
-                        <TextField fx:id="dx1" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                        <TextField fx:id="dy1" prefHeight="26.0" prefWidth="285.0" GridPane.columnIndex="2"
-                                   GridPane.rowIndex="1"/>
-                        <TextField fx:id="dx2" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                        <TextField fx:id="dy2" prefHeight="26.0" prefWidth="287.0" GridPane.columnIndex="2"
-                                   GridPane.rowIndex="2"/>
-                    </GridPane>
-                    <Label text="Epsilon">
-                        <font>
-                            <Font name="System Bold" size="12.0"/>
-                        </font>
-                    </Label>
-                    <TextField fx:id="epsilonSys" prefHeight="26.0" prefWidth="223.0"/>
-                    <Button mnemonicParsing="false" onAction="#solveSystem" prefHeight="26.0" prefWidth="149.0"
-                            text="Calculate"/>
-                    <Button mnemonicParsing="false" onAction="#testSystem1" prefHeight="26.0" prefWidth="149.0"
-                            text="Test 1"/>
-                    <Button mnemonicParsing="false" onAction="#testSystem2" prefHeight="26.0" prefWidth="151.0"
-                            text="Test 2"/>
+                    <HBox maxWidth="1.7976931348623157E308" prefHeight="109.0" prefWidth="750.0">
+                        <VBox prefHeight="109.0" prefWidth="103.0" spacing="10.0">
+                            <Label/>
+                            <Label text="Function 1"/>
+                            <Label text="Function 2"/>
+                            <Label fx:id="dFunction3Label" text="Function 3"/>
+                        </VBox>
+                        <VBox prefHeight="110.0" prefWidth="216.0" spacing="5.0">
+                            <HBox.margin>
+                                <Insets right="5.0"/>
+                            </HBox.margin>
+                            <Label alignment="CENTER" prefHeight="18.0" prefWidth="260.0" text="x"
+                                   textAlignment="CENTER"/>
+                            <TextField fx:id="dx1"/>
+                            <TextField fx:id="dx2"/>
+                            <TextField fx:id="dx3"/>
+                        </VBox>
+                        <VBox prefHeight="110.0" prefWidth="206.0" spacing="5.0">
+                            <HBox.margin>
+                                <Insets right="5.0"/>
+                            </HBox.margin>
+                            <Label alignment="CENTER" prefHeight="18.0" prefWidth="269.0" text="y"/>
+                            <TextField fx:id="dy1" prefHeight="26.0" prefWidth="285.0"/>
+                            <TextField fx:id="dy2" prefHeight="26.0" prefWidth="287.0"/>
+                            <TextField fx:id="dy3"/>
+                        </VBox>
+                        <VBox fx:id="dzBox" prefHeight="100.0" prefWidth="197.0" spacing="5.0">
+                            <Label alignment="CENTER" prefHeight="18.0" prefWidth="197.0" text="z"
+                                   textAlignment="CENTER"/>
+                            <TextField fx:id="dz1"/>
+                            <TextField fx:id="dz2"/>
+                            <TextField fx:id="dz3"/>
+                        </VBox>
+                    </HBox>
+                    <HBox prefHeight="364.0" prefWidth="740.0">
+                        <VBox prefHeight="323.0" prefWidth="245.0" spacing="10.0">
+                            <HBox.margin>
+                                <Insets right="10.0"/>
+                            </HBox.margin>
+                            <Label text="Epsilon">
+                                <font>
+                                    <Font name="System Bold" size="14.0"/>
+                                </font>
+                            </Label>
+                            <TextField fx:id="epsilonSys" prefHeight="26.0" prefWidth="163.0"/>
+                            <Label text="Iterations maximum">
+                                <font>
+                                    <Font name="System Bold" size="14.0"/>
+                                </font>
+                            </Label>
+                            <TextField fx:id="iterMax"/>
+                            <Button mnemonicParsing="false" onAction="#solveSystem" prefHeight="26.0" prefWidth="251.0"
+                                    text="Calculate"/>
+                            <Button mnemonicParsing="false" onAction="#testSystem1" prefHeight="26.0" prefWidth="285.0"
+                                    text="Test 1"/>
+                            <Button mnemonicParsing="false" onAction="#testSystem2" prefHeight="26.0" prefWidth="251.0"
+                                    text="Test 2"/>
+                            <Label fx:id="errorSysLabel" prefHeight="111.0" prefWidth="204.0" textFill="RED"
+                                   textOverrun="CLIP" wrapText="true"/>
+                        </VBox>
+                        <HBox fx:id="chartBoxSystem" prefHeight="287.0" prefWidth="567.0">
+                            <HBox.margin>
+                                <Insets/>
+                            </HBox.margin>
+                        </HBox>
+                    </HBox>
                 </VBox>
-                <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true"/>
             </AnchorPane>
         </Tab>
     </TabPane>

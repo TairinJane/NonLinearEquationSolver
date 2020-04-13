@@ -35,9 +35,8 @@ public class NewtonSystem {
         }
     }
 
-    public static double[] solveSystem(Expression[] f, Expression[][] d, double[] x, double epsilon) {
+    public static double[] solveSystem(Expression[] f, Expression[][] d, double[] x, double epsilon, int maxn) {
         int n = 0;
-        int maxn = 10;
         defineArgs(f, x);
 
         for (Expression[] row : d)
