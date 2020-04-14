@@ -49,13 +49,19 @@ public class Solver {
 
         double x = a;
         double xn = a - (b - a) / (fb - fa) * fa;
-        System.out.println("sc xn = " + xn);
         f.setArgumentValue(arg, xn);
         double fxn = f.calculate();
 
         while (Math.abs(xn - x) > epsilon && Math.abs(fxn) > epsilon) {
             x = xn;
-            xn = xn - (a - xn) / (fa - fxn) * fxn;
+//            xn = xn - (a - xn) / (fa - fxn) * fxn;
+            if (fxn * fa < 0) b = x;
+            else a = x;
+            f.setArgumentValue(arg, a);
+            fa = f.calculate();
+            f.setArgumentValue(arg, b);
+            fb = f.calculate();
+            xn = (a * fb - b * fa) / (fb - fa);
             f.setArgumentValue(arg, xn);
             fxn = f.calculate();
             n++;
@@ -77,11 +83,14 @@ public class Solver {
 
     private static double getRootBySecantMethod(Function<Double, Double> f, double a, double b, double epsilon) throws Exception {
         if (f.apply(a) * f.apply(b) > 0) throw new Exception("Method is incorrect for this interval");
-        double x = b;
-        double xn = x + 10;
+        double x = a;
+        double xn = a - (b - a) / (f.apply(b) - f.apply(a)) * f.apply(a);
         while (Math.abs(f.apply(x)) >= epsilon && Math.abs(x - xn) > epsilon) {
             xn = x;
+            if (f.apply(xn) * f.apply(a) < 0) b = x;
+            else a = x;
             x = x - ((a - x) / (f.apply(a) - f.apply(x))) * f.apply(x);
+            xn = (a * f.apply(b) - b * f.apply(a)) / (f.apply(b) - f.apply(a));
         }
         return x;
     }
@@ -99,44 +108,4 @@ public class Solver {
         }
         return input;
     }
-
-    /*public static void main(String[] args) {
-        df.setMaximumFractionDigits(10);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
-        System.out.println("Enter equation coefficients:\n" +
-                "ax^4 + bx^3 + cx^2 + dx + e");
-
-        double a = getDoubleFromConsole(reader);
-        double b = getDoubleFromConsole(reader);
-        double c = getDoubleFromConsole(reader);
-        double d = getDoubleFromConsole(reader);
-        double e = getDoubleFromConsole(reader);
-
-        Function<Double, Double> function = x -> a * Math.pow(x, 4) + b * Math.pow(x, 3) + c * x * x + d * x + e;
-
-        System.out.println("Enter left limit:");
-        double leftLimit = getDoubleFromConsole(reader);
-        System.out.println("Enter right limit:");
-        double rightLimit = getDoubleFromConsole(reader);
-        System.out.println("Enter epsilon:");
-        double epsilon = getDoubleFromConsole(reader);
-        System.out.println();
-
-        double x = getRootByBisectionMethod(function, leftLimit, rightLimit, epsilon);
-        System.out.println("Bisection method:");
-        System.out.println("x = " + df.format(x));
-        System.out.println("f(x) = " + df.format(function.apply(x)));
-        System.out.println();
-
-        try {
-            x = getRootBySecantMethod(function, leftLimit, rightLimit, epsilon);
-            System.out.println("Secant method:");
-            System.out.println("x = " + df.format(x));
-            System.out.println("f(x) = " + df.format(function.apply(x)));
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-
-    }*/
 }

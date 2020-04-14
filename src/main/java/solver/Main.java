@@ -116,14 +116,16 @@ public class Main extends Application {
             aVal = bVal;
             bVal = t;
         }
-        int precision = epsilon.getText().trim().replaceAll("[,]+", ".").length() - 2;
+        int precision = epsilon.getText().trim().replaceAll("[,]+", ".").length();
         LineChart<Number, Number> chart = drawPlot(function, aVal, bVal, chartBox);
 
         double bisectionRoot;
         try {
             bisectionRoot = Solver.getRootByBisectionMethod(function, aVal, bVal, epsVal);
             System.out.println("bx = " + bisectionRoot);
-            bisectionResult.setText(String.format("%s = %s", arg, Solver.formatToPrecision(bisectionRoot, precision)));
+            function.setArgumentValue(arg, bisectionRoot);
+            bisectionResult.setText(String.format("%s = %s, f(%s) = %s", arg, Solver.formatToPrecision(bisectionRoot, precision),
+                    arg, Solver.formatToPrecision(function.calculate(), precision)));
             addRootToChart(function, bisectionRoot, arg, chart, "Bisection method");
         } catch (Exception e) {
             System.out.println("ex b " + e.getMessage());
@@ -134,7 +136,9 @@ public class Main extends Application {
         try {
             secantRoot = Solver.getRootBySecantMethod(function, aVal, bVal, epsVal);
             System.out.println("secx = " + secantRoot);
-            secantResult.setText(String.format("%s = %s", arg, Solver.formatToPrecision(secantRoot, precision)));
+            function.setArgumentValue(arg, secantRoot);
+            secantResult.setText(String.format("%s = %s, f(%s) = %s", arg, Solver.formatToPrecision(secantRoot, precision),
+                    arg, Solver.formatToPrecision(function.calculate(), precision)));
             addRootToChart(function, secantRoot, arg, chart, "Secant method");
         } catch (Exception e) {
             System.out.println("ex s " + e.getMessage());
@@ -266,19 +270,36 @@ public class Main extends Application {
                 f[i] = new Expression(formatToExpression(functionsArray[i].getText()));
                 if (f[i].getMissingUserDefinedArguments().length != systemSize)
                     throw new Exception("Function " + (i + 1) + " should include " + systemSize + " variables");
+                if (!f[i].checkLexSyntax()) {
+                    throw new Exception("Function " + (i + 1) + " is invalid");
+                }
+
                 if (argsArray[i].getText().equals("")) throw new Exception("Enter " + (i + 1) + "th argument");
-                x[i] = Double.parseDouble(argsArray[i].getText());
+                try {
+                    x[i] = Double.parseDouble(argsArray[i].getText().trim().replaceAll("[,]+", "."));
+                } catch (NumberFormatException e) {
+                    throw new Exception((i + 1) + "th argument should be a number");
+                }
+
                 for (int j = 0; j < systemSize; j++) {
                     if (derivativeArray[i][j].getText().equals(""))
                         throw new Exception("Enter derivative for function " + (j + 1) + " by " + (i + 1) + "th argument");
                     d[i][j] = new Expression(formatToExpression(derivativeArray[i][j].getText()));
                     if (d[i][j].getMissingUserDefinedArguments().length != systemSize)
                         throw new Exception((i + 1) + "th derivative should include " + systemSize + " variables");
+                    if (!d[i][j].checkLexSyntax()) {
+                        throw new Exception("Derivative for function " + (j + 1) + " by " + (i + 1) + "th argument is invalid");
+                    }
                 }
             }
+
             double epsilon = 0.00001f;
             if (!epsilonSys.getText().equals(""))
-                epsilon = Double.parseDouble(epsilonSys.getText().trim().replaceAll("[,]+", "."));
+                try {
+                    epsilon = Double.parseDouble(epsilonSys.getText().trim().replaceAll("[,]+", "."));
+                } catch (NumberFormatException e) {
+                    throw new Exception("Epsilon should be a number");
+                }
             else epsilonSys.setText(String.valueOf(epsilon));
             if (epsilon <= 0 || epsilon >= 1) throw new Exception("Epsilon must be between 0 and 1");
 
